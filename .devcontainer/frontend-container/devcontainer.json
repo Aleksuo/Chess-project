@@ -1,0 +1,7 @@
+{
+    "name": "Frontend container",
+    "dockerComposeFile": ["../../docker-compose.yml"],
+    "service": "frontend",
+    "shutdownAction": "none",
+    "workspaceFolder": "/workspace/chess_frontend"
+}

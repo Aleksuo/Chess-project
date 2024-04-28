@@ -1,0 +1,9 @@
+version: '3'
+services:
+  frontend:
+    image: chess_project/frontend
+    volumes:
+      - .:/workspace:cached
+    build: ./chess_frontend
+    command: sleep infinity
+    
