@@ -2,6 +2,7 @@ version: '3'
 services:
   frontend:
     image: chess_project/frontend
+    restart: always
     volumes:
       - .:/workspace:cached
     build: 
@@ -9,6 +10,7 @@ services:
     command: sleep infinity
   backend:
     image: chess_project/backend
+    restart: always
     volumes:
       - .:/workspace:cached
     build:
