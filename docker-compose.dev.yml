@@ -1,0 +1,18 @@
+version: '3'
+services:
+  frontend:
+    image: chess_project/frontend
+    volumes:
+      - .:/workspace:cached
+    build: 
+      dockerfile: ./chess_frontend/dev.dockerfile
+    command: sleep infinity
+  backend:
+    image: chess_project/backend
+    volumes:
+      - .:/workspace:cached
+    build:
+      dockerfile: ./chess_backend/dev.dockerfile
+    command: sleep infinity
+
+    

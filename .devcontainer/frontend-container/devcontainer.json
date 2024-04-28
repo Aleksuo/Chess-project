@@ -1,7 +1,16 @@
 {
     "name": "Frontend container",
-    "dockerComposeFile": ["../../docker-compose.yml"],
+    "dockerComposeFile": ["../../docker-compose.dev.yml"],
     "service": "frontend",
     "shutdownAction": "none",
-    "workspaceFolder": "/workspace/chess_frontend"
+    "workspaceFolder": "/workspace/chess_frontend",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "Angular.ng-template",
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode"
+            ]
+        }
+    }
 }

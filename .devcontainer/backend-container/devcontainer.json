@@ -1,0 +1,14 @@
+{
+    "name": "Backend container",
+    "dockerComposeFile": ["../../docker-compose.dev.yml"],
+    "service": "backend",
+    "shutdownAction": "none",
+    "workspaceFolder": "/workspace/chess_backend",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "golang.Go"
+            ]
+        }
+    }
+}
