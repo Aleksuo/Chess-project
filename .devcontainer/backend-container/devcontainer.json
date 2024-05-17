@@ -3,7 +3,7 @@
     "dockerComposeFile": ["../../docker-compose.dev.yml"],
     "service": "backend",
     "shutdownAction": "none",
-    "workspaceFolder": "/workspace/chess_backend",
+    "workspaceFolder": "/workspace",
     "customizations": {
         "vscode": {
             "extensions": [

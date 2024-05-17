@@ -7,5 +7,5 @@ message HelloRequest {
 }
 
 message HelloReply {
-    required string message = 1;
+    required string message = 2;
 }

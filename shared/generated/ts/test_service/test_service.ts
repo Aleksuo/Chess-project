@@ -75,7 +75,7 @@ function createBaseHelloReply(): HelloReply {
 export const HelloReply = {
   encode(message: HelloReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.message !== "") {
-      writer.uint32(10).string(message.message);
+      writer.uint32(18).string(message.message);
     }
     return writer;
   },
@@ -87,8 +87,8 @@ export const HelloReply = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
+        case 2:
+          if (tag !== 18) {
             break;
           }
 

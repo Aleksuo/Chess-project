@@ -4,7 +4,8 @@ services:
     image: chess_project/frontend
     restart: always
     volumes:
-      - .:/workspace:cached
+      - ./chess_frontend:/workspace/chess_frontend:cached
+      - ./shared:/workspace/shared:cached
     build: 
       dockerfile: ./chess_frontend/dev.dockerfile
     command: sleep infinity
@@ -12,7 +13,8 @@ services:
     image: chess_project/backend
     restart: always
     volumes:
-      - .:/workspace:cached
+      - ./chess_backend:/workspace/chess_backend:cached
+      - ./shared:/workspace/shared:cached
     build:
       dockerfile: ./chess_backend/dev.dockerfile
     command: sleep infinity

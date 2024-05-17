@@ -3,14 +3,15 @@
     "dockerComposeFile": ["../../docker-compose.dev.yml"],
     "service": "frontend",
     "shutdownAction": "none",
-    "workspaceFolder": "/workspace/chess_frontend",
+    "workspaceFolder": "/workspace",
     "customizations": {
         "vscode": {
             "extensions": [
                 "Angular.ng-template",
                 "dbaeumer.vscode-eslint",
                 "esbenp.prettier-vscode",
-                "bradlc.vscode-tailwindcss"
+                "bradlc.vscode-tailwindcss",
+                "cyrilletuzi.angular-schematics"
             ]
         }
     }
