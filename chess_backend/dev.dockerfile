@@ -1,4 +1,4 @@
-FROM golang:1.22-alpine
+FROM golang:1.22.3-alpine
 RUN apk add --update nodejs npm
 RUN apk update && apk add --no-cache make protobuf-dev
 RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28 

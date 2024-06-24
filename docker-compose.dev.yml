@@ -9,6 +9,12 @@ services:
     build: 
       dockerfile: ./chess_frontend/dev.dockerfile
     command: sleep infinity
+    ports:
+      - "4200:4200"
+    depends_on:
+      - envoy
+    networks:
+      - app-network
   backend:
     image: chess_project/backend
     restart: always
@@ -18,5 +24,22 @@ services:
     build:
       dockerfile: ./chess_backend/dev.dockerfile
     command: sleep infinity
-
+    ports:
+      - "50051:50051"
+    networks:
+      - app-network
+  envoy:
+    build:
+      context: ./envoy_gateway
+      dockerfile: dockerfile
+    ports:
+      - "8080:8080"
+      - "9901:9901"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
     

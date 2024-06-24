@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { TestService } from 'src/common/service/test.service';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,16 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'chess_frontend';
+
+  testService = inject(TestService)
+
+  ngOnInit(): void {
+    this.testService.sendHelloMessage("Hi there")
+    .then(
+      (reply) => console.log(reply.getMessage())
+    )
+  }
+  
 }

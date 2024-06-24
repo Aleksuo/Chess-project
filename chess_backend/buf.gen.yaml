@@ -5,11 +5,18 @@ managed:
     default: github.com/bufbuild/buf-tour/gen
 plugins:
   - plugin: buf.build/protocolbuffers/go
-    out: ../shared/generated/go
+    out: ./
     opt: paths=source_relative
-  - plugin: buf.build/connectrpc/go
-    out: ../shared/generated/go
+  - plugin: go-grpc
+    out: ./
     opt: paths=source_relative
-  - plugin: buf.build/community/stephenh-ts-proto
+  - plugin: buf.build/grpc/web
     out: ../shared/generated/ts
-    opt: paths=source_relative
+    opt: 
+      - mode=grpcwebtext
+      - import_style=commonjs+dts
+  - plugin: buf.build/protocolbuffers/js
+    out: ../shared/generated/ts
+    opt:
+      - import_style=commonjs
+      - binary

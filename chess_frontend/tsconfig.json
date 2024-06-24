@@ -24,7 +24,8 @@
       "dom"
     ],
     "paths": {
-      "@grpc-types/*": ["../shared/generated/ts/*"]
+      "@grpc-types/*": ["../shared/generated/ts/*"],
+      "google-protobuf": ["./node_modules/google-protobuf/google-protobuf.js"]
     }
   },
   "angularCompilerOptions": {

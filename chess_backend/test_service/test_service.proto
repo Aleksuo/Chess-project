@@ -1,11 +1,19 @@
+syntax = "proto3";
+
+package test_service;
+
+option go_package =  "chess_backend/test_service";
+
+
+
 service TestService {
     rpc hello (HelloRequest) returns (HelloReply) {}
 }
 
 message HelloRequest {
-    required string name = 1;
+    string name = 1;
 }
 
 message HelloReply {
-    required string message = 2;
+    string message = 2;
 }
