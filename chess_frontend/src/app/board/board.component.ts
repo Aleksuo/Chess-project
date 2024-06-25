@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { PieceComponent } from '../piece/piece.component';
+import { setThrowInvalidWriteToSignalError } from '@angular/core/primitives/signals';
 
 
 
@@ -20,6 +21,9 @@ interface Tile {
 interface Board {
     tiles: Tile[][];
 }
+
+
+
 
 @Component({
     selector: 'app-board',
@@ -41,6 +45,8 @@ export class BoardComponent implements OnInit {
     readonly files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
     board!: Board;
+
+    selected: {x: number, y:number} | null = null
 
     ngOnInit(): void {
         this.board = { tiles: [] };
@@ -99,4 +105,22 @@ export class BoardComponent implements OnInit {
             color
         }
     }
+
+    onTileClick(x: number, y: number): void {
+        if(this.isSelectable(x, y)) {
+            this.selected = {x, y};
+        }else if(this.selected) {
+            const tileToMoveTo = this.board.tiles[y][x];
+            const selectedTile = this.board.tiles[this.selected.y][this.selected.x];
+
+            tileToMoveTo.piece = { ...selectedTile.piece } as Piece;
+            selectedTile.piece = null;
+            this.selected = null;
+        }
+    }
+
+    isSelectable(x: number, y:number) {
+        return this.board.tiles[y][x].piece !== null;
+    }
  }
+
