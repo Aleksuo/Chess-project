@@ -1,0 +1,25 @@
+
+  <div class="w-fit h-fit grid">
+    <div class="grid grid-flow-col-dense">
+      @for (item of files; track $index) {
+      <div class="text-center ml-4">{{ item | uppercase }}</div>
+      }
+    </div>
+    @if (board) { @for (row of board.tiles; track row; let i = $index) {
+    <div class="grid grid-flow-col-dense">
+      <div class="place-content-center mr-2">
+        {{ ranks[ranks.length - 1 - i] }}
+      </div>
+      @for(col of row; track col; let j = $index) {
+      <div
+        [class.bg-gray-200]="(i + j) % 2"
+        class="w-40 h-40 place-content-center text-center hover:bg-violet-300"
+      >
+        @if (col.piece) {
+        <app-piece [piece]="col.piece"></app-piece>
+        }
+      </div>
+      }
+    </div>
+    } }
+  </div>

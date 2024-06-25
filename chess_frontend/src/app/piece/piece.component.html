@@ -1,0 +1,8 @@
+<span class="text-8xl font-mono">
+  @if (piece.color === 'WHITE') { @switch (piece.type) { @case ('PAWN') {
+  &#9817; } @case ('ROOK') { &#9814; } @case ('KNIGHT') { &#9816; } @case
+  ('BISHOP') { &#9815; } @case ('QUEEN') { &#9813; } @case ('KING') { &#9812; }
+  } } @else { @switch (piece.type) { @case ('PAWN') { &#9823; } @case ('ROOK') {
+  &#9820; } @case ('KNIGHT') { &#9822; } @case ('BISHOP') { &#9821; } @case
+  ('QUEEN') { &#9819; } @case ('KING') { &#9818; } } }
+</span>

@@ -1,11 +1,15 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TestService } from 'src/common/service/test.service';
+import { BoardComponent } from './board/board.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [
+    RouterOutlet,
+    BoardComponent
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
