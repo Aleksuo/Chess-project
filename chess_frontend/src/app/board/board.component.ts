@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, Signal, WritableSignal, computed, signal } from '@angular/core';
 import { PieceComponent } from '../piece/piece.component';
-import { setThrowInvalidWriteToSignalError } from '@angular/core/primitives/signals';
-
 
 
 
@@ -15,15 +13,13 @@ export interface Piece {
 }
 
 interface Tile {
+    coordinate: string,
     piece: Piece | null
 }
 
 interface Board {
     tiles: Tile[][];
 }
-
-
-
 
 @Component({
     selector: 'app-board',
@@ -41,22 +37,33 @@ export class BoardComponent implements OnInit {
     readonly rows = 8;
     readonly cols = 8;
 
-    readonly ranks = [1,2,3,4,5,6,7,8]
+    ranks = [1,2,3,4,5,6,7,8]
     readonly files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+
+    playerColor = 'WHITE';
 
     board!: Board;
 
-    selected: {x: number, y:number} | null = null
+    selected: WritableSignal<{x: number, y:number} | null> = signal(null);
+    movesForSelected: Signal<Set<string>> = computed(this.movesForSelectedComputation())
 
     ngOnInit(): void {
+        if(this.playerColor === 'WHITE') {
+            this.ranks.reverse();
+        }
         this.board = { tiles: [] };
        for(let i = 0 ; i < this.rows; i++) {
         this.board.tiles.push([]);
         for(let j = 0; j < this.cols; j++) {
-            this.board.tiles[i].push({ piece: null });
+            this.board.tiles[i].push({ piece: null, coordinate: '' });
         }
        }
        this.setInitialBoardPosition(this.board);
+       for(let i = 0 ; i < this.rows; i++) {
+        for(let j = 0; j < this.cols; j++) {
+           this.board.tiles[i][j].coordinate = `${this.files[j]}${this.ranks[i]}`;
+        }
+       }
     }
 
     setInitialBoardPosition(board: Board) {
@@ -95,7 +102,9 @@ export class BoardComponent implements OnInit {
 
     newTile(piece: Piece): Tile {
         return {
-            piece
+            piece,
+            coordinate: ''
+           
         }
     }
 
@@ -107,20 +116,66 @@ export class BoardComponent implements OnInit {
     }
 
     onTileClick(x: number, y: number): void {
+        const selected = this.selected()
         if(this.isSelectable(x, y)) {
-            this.selected = {x, y};
-        }else if(this.selected) {
-            const tileToMoveTo = this.board.tiles[y][x];
-            const selectedTile = this.board.tiles[this.selected.y][this.selected.x];
+            this.selected.set({x, y});
+        }else if(selected) {
+            const tileToMoveTo = this.getTile(x, y);
+            const selectedTile = this.getTile(selected.x, selected.y);
 
             tileToMoveTo.piece = { ...selectedTile.piece } as Piece;
             selectedTile.piece = null;
-            this.selected = null;
+            this.selected.set(null);
         }
     }
 
     isSelectable(x: number, y:number) {
         return this.board.tiles[y][x].piece !== null;
+    }
+
+    movesForSelectedComputation() {
+        return () => {
+            let allowedMoves = new Set<string>();
+            const selected = this.selected();
+            if(selected){
+                const selectedPiece = this.getTile(selected.x, selected.y).piece;
+                if(selectedPiece?.type === 'PAWN') {
+                   allowedMoves = this.movesForPawn(selectedPiece, selected);
+                }
+            }
+            return allowedMoves;
+        }
+    }
+
+    movesForPawn(selectedPiece: Piece, selected: {x:number, y:number}): Set<string> {
+        const allowedMoves = new Set<string>();
+        const topTile = this.getTile(selected.x, selected.y - 1)
+        const rightDiagonal = this.getTile(selected.x + 1, selected.y - 1)
+        const leftDiagonal = this.getTile(selected.x - 1, selected.y -1);
+        // Basic movement
+        if(topTile.piece === null){
+            allowedMoves.add(topTile.coordinate);
+            const currentRank = this.ranks[selected.y]
+            if(selectedPiece.color === 'WHITE' && currentRank === 2) {
+                const firstMoveTile = this.getTile(selected.x, selected.y - 2)
+                if(firstMoveTile.piece == null) {
+                    allowedMoves.add(firstMoveTile.coordinate);
+                }
+            }
+        }
+        // Eat diagonal
+        if (rightDiagonal?.piece && rightDiagonal.piece.color !== selectedPiece.color) {
+            allowedMoves.add(rightDiagonal.coordinate);
+        }
+        if(leftDiagonal?.piece && leftDiagonal.piece.color !== selectedPiece.color) {
+            allowedMoves.add(leftDiagonal.coordinate);
+        }
+
+        return allowedMoves
+    }
+
+    getTile(x: number, y:number): Tile {
+        return this.board.tiles[y][x];
     }
  }
 

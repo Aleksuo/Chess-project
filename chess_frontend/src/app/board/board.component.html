@@ -7,19 +7,22 @@
   @if (board) { @for (row of board.tiles; track row; let i = $index) {
   <div class="grid grid-flow-col-dense">
     <div class="place-content-center mr-2">
-      {{ ranks[ranks.length - 1 - i] }}
+      {{ ranks[i] }}
     </div>
     @for(col of row; track col; let j = $index) {
     <div
       (click)="onTileClick(j, i)"
       [class.bg-gray-200]="(i + j) % 2"
-      [class.border-2]="selected?.x === j && selected?.y === i"
-      [class.border-indigo-500]="selected?.x === j && selected?.y === i"
-      [class.hover:bg-violet-300]="isSelectable(j, i)"
-      class="w-40 h-40 place-content-center text-center"
+      [class.border-4]="selected()?.x === j && selected()?.y === i"
+      [class.border-slate-400]="selected()?.x === j && selected()?.y === i"
+      [class.hover:bg-yellow-100]="isSelectable(j, i)"
+      [class.bg-red-300]="col.piece &&  movesForSelected().has(col.coordinate)"
+      class="w-40 h-40 flex items-center justify-center"
     >
       @if (col.piece) {
-      <app-piece [piece]="col.piece"></app-piece>
+        <app-piece [piece]="col.piece"></app-piece>
+       } @else if (movesForSelected().has(col.coordinate)) {
+      <div class="w-10 h-10 bg-slate-500 rounded-full"></div>
       }
     </div>
     }
