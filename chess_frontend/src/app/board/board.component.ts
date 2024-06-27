@@ -165,16 +165,20 @@ export class BoardComponent implements OnInit {
     }
 
     movesForPawn(selectedPiece: Piece, selected: {x:number, y:number}): Set<string> {
+        const movementDirection = this.playerColor === selectedPiece.color
+         ? -1 : 1;
         const allowedMoves = new Set<string>();
-        const topTile = this.getTile(selected.x, selected.y - 1)
-        const rightDiagonal = this.getTile(selected.x + 1, selected.y - 1)
-        const leftDiagonal = this.getTile(selected.x - 1, selected.y -1);
+        const topTile = this.getTile(selected.x, selected.y + movementDirection)
+        const rightDiagonal = this.getTile(selected.x + 1, selected.y + movementDirection)
+        const leftDiagonal = this.getTile(selected.x - 1, selected.y + movementDirection);
+        
         // Basic movement
         if(topTile?.piece === null){
             allowedMoves.add(topTile.coordinate);
             const currentRank = this.ranks[selected.y]
-            if(selectedPiece.color === 'WHITE' && currentRank === 2) {
-                const firstMoveTile = this.getTile(selected.x, selected.y - 2)
+            if((selectedPiece.color === 'WHITE' && currentRank === 2) 
+                || (selectedPiece.color === 'BLACK' && currentRank === 7)) {
+                const firstMoveTile = this.getTile(selected.x, selected.y + 2 * movementDirection)
                 if(firstMoveTile && firstMoveTile.piece == null) {
                     allowedMoves.add(firstMoveTile.coordinate);
                 }
