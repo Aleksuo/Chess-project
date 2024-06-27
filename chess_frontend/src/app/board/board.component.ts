@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, Signal, WritableSignal, computed, signal } from '@angular/core';
 import { PieceComponent } from '../piece/piece.component';
+import { TemplateLiteral } from '@angular/compiler';
 
 
 
@@ -37,7 +38,7 @@ export class BoardComponent implements OnInit {
     readonly rows = 8;
     readonly cols = 8;
 
-    ranks = [1,2,3,4,5,6,7,8]
+    ranks = [1,2,3,4,5,6,7,8];
     readonly files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
     playerColor = 'WHITE';
@@ -152,6 +153,9 @@ export class BoardComponent implements OnInit {
                 if(selectedPiece?.type === "QUEEN") {
                     allowedMoves = this.movesForQueen(selectedPiece, selected);                
                 }
+                if(selectedPiece?.type === "KNIGHT") {
+                    allowedMoves = this.movesForKnight(selectedPiece, selected);
+                }
             }
             return allowedMoves;
         }
@@ -219,6 +223,34 @@ export class BoardComponent implements OnInit {
         return new Set([up, right, down, left, upperLeft, upperRight, lowerLeft, lowerRight]
             .flat().map(tile => tile.coordinate)
         );
+    }
+
+    movesForKnight(selectedPiece: Piece, selected: {x: number, y: number}) {
+        const allowedMoves = new Set<string>();
+        const {x, y} = selected;
+        const moves = [
+            // Up
+            {x: x - 1, y: y - 2},
+            {x: x + 1, y: y - 2},
+            //Right
+            {x: x + 2, y: y - 1},
+            {x: x + 2, y: y + 1},
+            //Down
+            {x: x - 1, y: y + 2},
+            {x: x + 1, y: y + 2},
+            //Left
+            {x: x - 2, y: y + 1},
+            {x: x - 2, y: y - 1},
+        ]
+
+        for(const m of moves) {
+            const tile = this.getTile(m.x, m.y);
+            if(tile && tile.piece?.color !== selectedPiece.color) {
+                allowedMoves.add(tile.coordinate);
+            }
+        }
+
+        return allowedMoves;
     }
 
     castMovementRay(origin: {x: number, y: number}, dir: {x: number,  y: number}): Tile[] {
