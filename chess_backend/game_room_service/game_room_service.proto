@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package game_room_service;
+
+option go_package =  "chess_backend/game_room_service";
+
+
+service GameRoomService {
+    rpc connect(ConnectRequest) returns (stream GameStateResponse);
+    rpc sendMove(MoveRequest) returns (MoveResponse);
+}
+
+message ConnectRequest {
+    string userName = 1;
+}
+
+message GameStateResponse {
+    enum GAME_STATE {
+        NOT_STARTED = 0;
+        ONGOING = 1;
+        FINISHED = 2;
+    }
+    enum TURN {
+        WHITE = 0;
+        BLACK = 1;
+    }
+    string id = 1;
+    GAME_STATE gameState = 2;
+    TURN currentTurn = 3;
+    ChessGame chessGame = 4;
+}
+
+
+message ChessGame {
+    string white = 1;
+    string black = 2;
+    repeated Move moves = 3;
+}
+
+enum PIECE {
+    PAWN = 0;
+    ROOK = 1;
+    KNIGHT = 2;
+    BISHOP = 3;
+    QUEEN = 4;
+    KING = 5;
+}
+
+message Move {
+    PIECE piece = 1;
+    string from = 2;
+    string to = 3;
+}
+
+
+message MoveRequest {
+
+    string roomId = 1;
+    string userName = 2;
+    Move move = 3;
+}
+
+message MoveResponse {
+    string error = 1;
+}
