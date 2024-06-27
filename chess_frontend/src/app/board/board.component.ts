@@ -149,6 +149,9 @@ export class BoardComponent implements OnInit {
                 if(selectedPiece?.type === "BISHOP") {
                     allowedMoves = this.movesForBishop(selectedPiece, selected);
                 }
+                if(selectedPiece?.type === "QUEEN") {
+                    allowedMoves = this.movesForQueen(selectedPiece, selected);                
+                }
             }
             return allowedMoves;
         }
@@ -200,7 +203,23 @@ export class BoardComponent implements OnInit {
         return new Set([upperRight, upperLeft, lowerLeft, lowerRight]
             .flat().map((tile) => tile.coordinate)
         );
-    } 
+    }
+
+    movesForQueen(selectedPiece: Piece, selected: {x:number, y:number}): Set<string> {
+        const up = this.castMovementRay(selected, {x: 0, y: -1});
+        const right = this.castMovementRay(selected, {x: 1, y: 0});
+        const down = this.castMovementRay(selected, {x: 0, y: 1});
+        const left = this.castMovementRay(selected, {x: -1, y:0});
+
+        const upperRight = this.castMovementRay(selected, {x:1, y:-1});
+        const upperLeft = this.castMovementRay(selected, {x: -1, y: -1});
+        const lowerLeft = this.castMovementRay(selected, {x: -1, y: 1});
+        const lowerRight = this.castMovementRay(selected, {x: 1, y: 1});
+
+        return new Set([up, right, down, left, upperLeft, upperRight, lowerLeft, lowerRight]
+            .flat().map(tile => tile.coordinate)
+        );
+    }
 
     castMovementRay(origin: {x: number, y: number}, dir: {x: number,  y: number}): Tile[] {
         const tilesInPath = []
