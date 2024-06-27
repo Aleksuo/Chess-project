@@ -123,7 +123,7 @@ export class BoardComponent implements OnInit {
         }else if(selected) {
             const tileToMoveTo = this.getTile(x, y);
             const selectedTile = this.getTile(selected.x, selected.y);
-            if(tileToMoveTo && selectedTile) {
+            if(tileToMoveTo && selectedTile && this.movesForSelected().has(tileToMoveTo.coordinate)) {
                 tileToMoveTo.piece = { ...selectedTile.piece } as Piece;
                 selectedTile.piece = null;
                 this.selected.set(null);
