@@ -146,6 +146,9 @@ export class BoardComponent implements OnInit {
                 if(selectedPiece?.type === "ROOK"){
                     allowedMoves = this.movesForRook(selectedPiece, selected);
                 }
+                if(selectedPiece?.type === "BISHOP") {
+                    allowedMoves = this.movesForBishop(selectedPiece, selected);
+                }
             }
             return allowedMoves;
         }
@@ -187,6 +190,17 @@ export class BoardComponent implements OnInit {
         return new Set([up, right, down, left]
             .flat().map((tile) => tile.coordinate));
     }
+
+    movesForBishop(selectedPiece: Piece, selected: {x:number, y:number}): Set<string> {
+        const upperRight = this.castMovementRay(selected, {x:1, y:-1});
+        const upperLeft = this.castMovementRay(selected, {x: -1, y: -1});
+        const lowerLeft = this.castMovementRay(selected, {x: -1, y: 1});
+        const lowerRight = this.castMovementRay(selected, {x: 1, y: 1});
+
+        return new Set([upperRight, upperLeft, lowerLeft, lowerRight]
+            .flat().map((tile) => tile.coordinate)
+        );
+    } 
 
     castMovementRay(origin: {x: number, y: number}, dir: {x: number,  y: number}): Tile[] {
         const tilesInPath = []
