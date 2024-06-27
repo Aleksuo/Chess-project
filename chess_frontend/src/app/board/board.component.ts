@@ -156,6 +156,9 @@ export class BoardComponent implements OnInit {
                 if(selectedPiece?.type === "KNIGHT") {
                     allowedMoves = this.movesForKnight(selectedPiece, selected);
                 }
+                if(selectedPiece?.type === "KING") {
+                    allowedMoves = this.movesForKing(selectedPiece, selected);
+                }
             }
             return allowedMoves;
         }
@@ -250,6 +253,32 @@ export class BoardComponent implements OnInit {
             }
         }
 
+        return allowedMoves;
+    }
+
+    movesForKing(selectedPiece: Piece, selected: {x: number, y: number}): Set<string> {
+        const allowedMoves = new Set<string>();
+        const {x, y} = selected;
+        const moves = [
+            // Top row
+            {x: x - 1, y: y - 1},
+            {x: x, y: y -1 },
+            {x: x + 1, y: y -1},
+            //Middle row
+            {x: x - 1, y: y},
+            {x: x + 1, y: y},
+            //Bottom row
+            {x: x - 1, y: y + 1},
+            {x: x, y: y + 1},
+            {x: x + 1, y: y + 1}
+        ]
+
+        for(const m of moves) {
+            const tile = this.getTile(m.x, m.y);
+            if(tile && tile.piece?.color !== selectedPiece.color) {
+                allowedMoves.add(tile.coordinate);
+            }
+        }
         return allowedMoves;
     }
 
