@@ -122,10 +122,11 @@ export class BoardComponent implements OnInit {
         }else if(selected) {
             const tileToMoveTo = this.getTile(x, y);
             const selectedTile = this.getTile(selected.x, selected.y);
-
-            tileToMoveTo.piece = { ...selectedTile.piece } as Piece;
-            selectedTile.piece = null;
-            this.selected.set(null);
+            if(tileToMoveTo && selectedTile) {
+                tileToMoveTo.piece = { ...selectedTile.piece } as Piece;
+                selectedTile.piece = null;
+                this.selected.set(null);
+            }
         }
     }
 
@@ -138,9 +139,12 @@ export class BoardComponent implements OnInit {
             let allowedMoves = new Set<string>();
             const selected = this.selected();
             if(selected){
-                const selectedPiece = this.getTile(selected.x, selected.y).piece;
+                const selectedPiece = this.getTile(selected.x, selected.y)?.piece;
                 if(selectedPiece?.type === 'PAWN') {
                    allowedMoves = this.movesForPawn(selectedPiece, selected);
+                }
+                if(selectedPiece?.type === "ROOK"){
+                    allowedMoves = this.movesForRook(selectedPiece, selected);
                 }
             }
             return allowedMoves;
@@ -153,12 +157,12 @@ export class BoardComponent implements OnInit {
         const rightDiagonal = this.getTile(selected.x + 1, selected.y - 1)
         const leftDiagonal = this.getTile(selected.x - 1, selected.y -1);
         // Basic movement
-        if(topTile.piece === null){
+        if(topTile?.piece === null){
             allowedMoves.add(topTile.coordinate);
             const currentRank = this.ranks[selected.y]
             if(selectedPiece.color === 'WHITE' && currentRank === 2) {
                 const firstMoveTile = this.getTile(selected.x, selected.y - 2)
-                if(firstMoveTile.piece == null) {
+                if(firstMoveTile && firstMoveTile.piece == null) {
                     allowedMoves.add(firstMoveTile.coordinate);
                 }
             }
@@ -174,7 +178,44 @@ export class BoardComponent implements OnInit {
         return allowedMoves
     }
 
-    getTile(x: number, y:number): Tile {
+    movesForRook(selectedPiece: Piece, selected: {x:number, y:number}): Set<string> {     
+        const up = this.castMovementRay(selected, {x: 0, y: -1});
+        const right = this.castMovementRay(selected, {x: 1, y: 0});
+        const down = this.castMovementRay(selected, {x: 0, y: 1});
+        const left = this.castMovementRay(selected, {x: -1, y:0});
+
+        return new Set([up, right, down, left]
+            .flat().map((tile) => tile.coordinate));
+    }
+
+    castMovementRay(origin: {x: number, y: number}, dir: {x: number,  y: number}): Tile[] {
+        const tilesInPath = []
+        let currentPos = {...origin};
+        let currentTile = this.getTile(origin.x, origin.y);
+        const originPiece = currentTile?.piece
+        while(currentTile) {
+            currentPos.x += dir.x;
+            currentPos.y += dir.y;
+
+            currentTile = this.getTile(currentPos.x, currentPos.y);
+            const currentPiece = currentTile?.piece;
+            if(currentTile && currentPiece) {
+                if(currentPiece.color !== originPiece?.color) {
+                    tilesInPath.push(currentTile);
+                }
+                currentTile = null;
+            }else if (currentTile){
+                tilesInPath.push(currentTile);
+            }
+        }
+
+        return tilesInPath;
+    }
+
+    getTile(x: number, y:number): Tile | null {
+        if(x > this.files.length - 1 || x < 0 || y < 0 || y > this.ranks.length - 1) {
+            return null;
+        }
         return this.board.tiles[y][x];
     }
  }
