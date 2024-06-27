@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, Signal, WritableSignal, computed, signal } from '@angular/core';
 import { PieceComponent } from '../piece/piece.component';
-import { TemplateLiteral } from '@angular/compiler';
+import { TemplateLiteral, ThisReceiver } from '@angular/compiler';
 
 
 
@@ -40,6 +40,8 @@ export class BoardComponent implements OnInit {
 
     ranks = [1,2,3,4,5,6,7,8];
     readonly files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+
+    currentTurn = 'WHITE';
 
     playerColor = 'WHITE';
 
@@ -127,12 +129,24 @@ export class BoardComponent implements OnInit {
                 tileToMoveTo.piece = { ...selectedTile.piece } as Piece;
                 selectedTile.piece = null;
                 this.selected.set(null);
+                this.changeTurn();
             }
         }
     }
 
     isSelectable(x: number, y:number) {
-        return this.board.tiles[y][x].piece !== null;
+        const tile = this.getTile(x, y);
+        const piece = tile?.piece;
+
+        return !!piece && piece.color === this.currentTurn;
+    }
+
+    changeTurn(): void {
+        if(this.currentTurn === 'WHITE') {
+            this.currentTurn = 'BLACK'
+        }else {
+            this.currentTurn = 'WHITE';
+        }
     }
 
     movesForSelectedComputation() {
@@ -302,6 +316,7 @@ export class BoardComponent implements OnInit {
                     tilesInPath.push(currentTile);
                 }
                 currentTile = null;
+
             }else if (currentTile){
                 tilesInPath.push(currentTile);
             }
