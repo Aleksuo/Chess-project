@@ -78,13 +78,13 @@ proto.game_room_service.GameRoomServicePromiseClient =
  * @const
  * @type {!grpc.web.MethodDescriptor<
  *   !proto.game_room_service.ConnectRequest,
- *   !proto.game_room_service.GameStateResponse>}
+ *   !proto.game_room_service.RoomUpdateResponse>}
  */
 const methodDescriptor_GameRoomService_connect = new grpc.web.MethodDescriptor(
   '/game_room_service.GameRoomService/connect',
   grpc.web.MethodType.SERVER_STREAMING,
   proto.game_room_service.ConnectRequest,
-  proto.game_room_service.GameStateResponse,
+  proto.game_room_service.RoomUpdateResponse,
   /**
    * @param {!proto.game_room_service.ConnectRequest} request
    * @return {!Uint8Array}
@@ -92,7 +92,7 @@ const methodDescriptor_GameRoomService_connect = new grpc.web.MethodDescriptor(
   function(request) {
     return request.serializeBinary();
   },
-  proto.game_room_service.GameStateResponse.deserializeBinary
+  proto.game_room_service.RoomUpdateResponse.deserializeBinary
 );
 
 
@@ -100,7 +100,7 @@ const methodDescriptor_GameRoomService_connect = new grpc.web.MethodDescriptor(
  * @param {!proto.game_room_service.ConnectRequest} request The request proto
  * @param {?Object<string, string>=} metadata User defined
  *     call metadata
- * @return {!grpc.web.ClientReadableStream<!proto.game_room_service.GameStateResponse>}
+ * @return {!grpc.web.ClientReadableStream<!proto.game_room_service.RoomUpdateResponse>}
  *     The XHR Node Readable Stream
  */
 proto.game_room_service.GameRoomServiceClient.prototype.connect =
@@ -117,7 +117,7 @@ proto.game_room_service.GameRoomServiceClient.prototype.connect =
  * @param {!proto.game_room_service.ConnectRequest} request The request proto
  * @param {?Object<string, string>=} metadata User defined
  *     call metadata
- * @return {!grpc.web.ClientReadableStream<!proto.game_room_service.GameStateResponse>}
+ * @return {!grpc.web.ClientReadableStream<!proto.game_room_service.RoomUpdateResponse>}
  *     The XHR Node Readable Stream
  */
 proto.game_room_service.GameRoomServicePromiseClient.prototype.connect =

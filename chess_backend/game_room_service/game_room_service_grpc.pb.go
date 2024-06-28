@@ -50,7 +50,7 @@ func (c *gameRoomServiceClient) Connect(ctx context.Context, in *ConnectRequest,
 }
 
 type GameRoomService_ConnectClient interface {
-	Recv() (*GameStateResponse, error)
+	Recv() (*RoomUpdateResponse, error)
 	grpc.ClientStream
 }
 
@@ -58,8 +58,8 @@ type gameRoomServiceConnectClient struct {
 	grpc.ClientStream
 }
 
-func (x *gameRoomServiceConnectClient) Recv() (*GameStateResponse, error) {
-	m := new(GameStateResponse)
+func (x *gameRoomServiceConnectClient) Recv() (*RoomUpdateResponse, error) {
+	m := new(RoomUpdateResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -116,7 +116,7 @@ func _GameRoomService_Connect_Handler(srv interface{}, stream grpc.ServerStream)
 }
 
 type GameRoomService_ConnectServer interface {
-	Send(*GameStateResponse) error
+	Send(*RoomUpdateResponse) error
 	grpc.ServerStream
 }
 
@@ -124,7 +124,7 @@ type gameRoomServiceConnectServer struct {
 	grpc.ServerStream
 }
 
-func (x *gameRoomServiceConnectServer) Send(m *GameStateResponse) error {
+func (x *gameRoomServiceConnectServer) Send(m *RoomUpdateResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 

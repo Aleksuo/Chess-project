@@ -20,34 +20,70 @@ export namespace ConnectRequest {
   }
 }
 
-export class GameStateResponse extends jspb.Message {
-  getId(): string;
-  setId(value: string): GameStateResponse;
+export class RoomUpdateResponse extends jspb.Message {
+  getUpdatetype(): UPDATE_TYPE;
+  setUpdatetype(value: UPDATE_TYPE): RoomUpdateResponse;
 
-  getGamestate(): GameStateResponse.GAME_STATE;
-  setGamestate(value: GameStateResponse.GAME_STATE): GameStateResponse;
+  getRoomid(): string;
+  setRoomid(value: string): RoomUpdateResponse;
+  hasRoomid(): boolean;
+  clearRoomid(): RoomUpdateResponse;
 
-  getCurrentturn(): GameStateResponse.TURN;
-  setCurrentturn(value: GameStateResponse.TURN): GameStateResponse;
-
-  getChessgame(): ChessGame | undefined;
-  setChessgame(value?: ChessGame): GameStateResponse;
-  hasChessgame(): boolean;
-  clearChessgame(): GameStateResponse;
+  getGamestate(): GameState | undefined;
+  setGamestate(value?: GameState): RoomUpdateResponse;
+  hasGamestate(): boolean;
+  clearGamestate(): RoomUpdateResponse;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): GameStateResponse.AsObject;
-  static toObject(includeInstance: boolean, msg: GameStateResponse): GameStateResponse.AsObject;
-  static serializeBinaryToWriter(message: GameStateResponse, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): GameStateResponse;
-  static deserializeBinaryFromReader(message: GameStateResponse, reader: jspb.BinaryReader): GameStateResponse;
+  toObject(includeInstance?: boolean): RoomUpdateResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: RoomUpdateResponse): RoomUpdateResponse.AsObject;
+  static serializeBinaryToWriter(message: RoomUpdateResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): RoomUpdateResponse;
+  static deserializeBinaryFromReader(message: RoomUpdateResponse, reader: jspb.BinaryReader): RoomUpdateResponse;
 }
 
-export namespace GameStateResponse {
+export namespace RoomUpdateResponse {
   export type AsObject = {
-    id: string,
-    gamestate: GameStateResponse.GAME_STATE,
-    currentturn: GameStateResponse.TURN,
+    updatetype: UPDATE_TYPE,
+    roomid?: string,
+    gamestate?: GameState.AsObject,
+  }
+
+  export enum RoomidCase { 
+    _ROOMID_NOT_SET = 0,
+    ROOMID = 2,
+  }
+
+  export enum GamestateCase { 
+    _GAMESTATE_NOT_SET = 0,
+    GAMESTATE = 3,
+  }
+}
+
+export class GameState extends jspb.Message {
+  getGamestate(): GameState.GAME_STATE;
+  setGamestate(value: GameState.GAME_STATE): GameState;
+
+  getCurrentturn(): GameState.TURN;
+  setCurrentturn(value: GameState.TURN): GameState;
+
+  getChessgame(): ChessGame | undefined;
+  setChessgame(value?: ChessGame): GameState;
+  hasChessgame(): boolean;
+  clearChessgame(): GameState;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GameState.AsObject;
+  static toObject(includeInstance: boolean, msg: GameState): GameState.AsObject;
+  static serializeBinaryToWriter(message: GameState, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GameState;
+  static deserializeBinaryFromReader(message: GameState, reader: jspb.BinaryReader): GameState;
+}
+
+export namespace GameState {
+  export type AsObject = {
+    gamestate: GameState.GAME_STATE,
+    currentturn: GameState.TURN,
     chessgame?: ChessGame.AsObject,
   }
 
@@ -163,6 +199,11 @@ export namespace MoveResponse {
   }
 }
 
+export enum UPDATE_TYPE { 
+  IN_MATCHMAKING = 0,
+  ROOM_JOINED = 1,
+  GAME_STATE_UPDATED = 2,
+}
 export enum PIECE { 
   PAWN = 0,
   ROOK = 1,

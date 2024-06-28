@@ -6,7 +6,7 @@ option go_package =  "chess_backend/game_room_service";
 
 
 service GameRoomService {
-    rpc connect(ConnectRequest) returns (stream GameStateResponse);
+    rpc connect(ConnectRequest) returns (stream RoomUpdateResponse);
     rpc sendMove(MoveRequest) returns (MoveResponse);
 }
 
@@ -14,7 +14,18 @@ message ConnectRequest {
     string userName = 1;
 }
 
-message GameStateResponse {
+enum UPDATE_TYPE {
+    IN_MATCHMAKING = 0;
+    ROOM_JOINED = 1;
+    GAME_STATE_UPDATED = 2;
+}
+message RoomUpdateResponse {
+    UPDATE_TYPE updateType = 1;
+    optional string roomId = 2;
+    optional GameState gameState = 3;
+}
+
+message GameState {
     enum GAME_STATE {
         NOT_STARTED = 0;
         ONGOING = 1;
@@ -24,7 +35,6 @@ message GameStateResponse {
         WHITE = 0;
         BLACK = 1;
     }
-    string id = 1;
     GAME_STATE gameState = 2;
     TURN currentTurn = 3;
     ChessGame chessGame = 4;

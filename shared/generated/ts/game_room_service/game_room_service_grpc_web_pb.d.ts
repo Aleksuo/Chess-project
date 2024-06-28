@@ -11,7 +11,7 @@ export class GameRoomServiceClient {
   connect(
     request: game_room_service_game_room_service_pb.ConnectRequest,
     metadata?: grpcWeb.Metadata
-  ): grpcWeb.ClientReadableStream<game_room_service_game_room_service_pb.GameStateResponse>;
+  ): grpcWeb.ClientReadableStream<game_room_service_game_room_service_pb.RoomUpdateResponse>;
 
   sendMove(
     request: game_room_service_game_room_service_pb.MoveRequest,
@@ -30,7 +30,7 @@ export class GameRoomServicePromiseClient {
   connect(
     request: game_room_service_game_room_service_pb.ConnectRequest,
     metadata?: grpcWeb.Metadata
-  ): grpcWeb.ClientReadableStream<game_room_service_game_room_service_pb.GameStateResponse>;
+  ): grpcWeb.ClientReadableStream<game_room_service_game_room_service_pb.RoomUpdateResponse>;
 
   sendMove(
     request: game_room_service_game_room_service_pb.MoveRequest,
