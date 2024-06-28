@@ -1,7 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { TestService } from 'src/common/service/test.service';
 import { BoardComponent } from './board/board.component';
+import { GameRoomService } from 'src/common/service/game-room.service';
+import { RoomUpdateResponse } from '@grpc-types/game_room_service/game_room_service_pb';
 
 @Component({
   selector: 'app-root',
@@ -16,13 +17,20 @@ import { BoardComponent } from './board/board.component';
 export class AppComponent implements OnInit {
   title = 'chess_frontend';
 
-  testService = inject(TestService)
+  gameRoomService = inject(GameRoomService);
 
   ngOnInit(): void {
-    this.testService.sendHelloMessage("Hi there")
-    .then(
-      (reply) => console.log(reply.getMessage())
-    )
+    const stream = this.gameRoomService.connect('Testname');
+    stream.on("data", (data: RoomUpdateResponse) => {
+      console.log("data:", data);
+      console.log(data.getUpdatetype());
+    })
+    stream.on("status", (status: any) => {
+      console.log("status:", status);
+    })
+    stream.on("end", () => {
+      console.log("end");
+    })
   }
   
 }
