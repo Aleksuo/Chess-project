@@ -14,6 +14,7 @@ static_resources:
               typed_config:
                 "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
                 codec_type: auto
+                stream_idle_timeout: 0s
                 stat_prefix: ingress_http
                 route_config:
                   name: local_route
@@ -24,6 +25,8 @@ static_resources:
                         - match: { prefix: "/" }
                           route:
                             cluster: go_service
+                            max_stream_duration:
+                              grpc_timeout_header_max: 0s
                       cors:
                         allow_origin_string_match:
                           - prefix: "*"
