@@ -1,13 +1,8 @@
 <div class="w-fit h-fit grid">
-  <div class="grid grid-flow-col-dense">
-    @for (item of files; track $index) {
-    <div class="text-center ml-4">{{ item | uppercase }}</div>
-    }
-  </div>
-  @if (board) { @for (row of board.tiles; track row; let i = $index) {
+  @if (povBoard()) { @for (row of povBoard().tiles; track row; let i = $index) {
   <div class="grid grid-flow-col-dense">
     <div class="place-content-center mr-2">
-      {{ ranks[i] }}
+      {{ povBoard().ranks[i] }}
     </div>
     @for(col of row; track col; let j = $index) {
     <div
@@ -16,16 +11,21 @@
       [class.border-4]="selected()?.x === j && selected()?.y === i"
       [class.border-slate-400]="selected()?.x === j && selected()?.y === i"
       [class.hover:bg-yellow-100]="isSelectable(j, i)"
-      [class.bg-red-300]="col.piece &&  movesForSelected().has(col.coordinate)"
+      [class.bg-red-300]="col.piece && movesForSelected().has(col.coordinate)"
       class="w-40 h-40 flex items-center justify-center"
     >
       @if (col.piece) {
-        <app-piece [piece]="col.piece"></app-piece>
-       } @else if (movesForSelected().has(col.coordinate)) {
+      <app-piece [piece]="col.piece"></app-piece>
+      } @else if (movesForSelected().has(col.coordinate)) {
       <div class="w-10 h-10 bg-slate-500 rounded-full"></div>
       }
     </div>
     }
   </div>
   } }
+  <div class="grid grid-flow-col-dense">
+    @for (item of povBoard().files; track $index) {
+    <div class="text-center ml-4">{{ item | uppercase }}</div>
+    }
+  </div>
 </div>

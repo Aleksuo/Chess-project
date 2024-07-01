@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Piece } from '../board/board.component';
+import { Piece } from 'src/common/types/board/board.type';
 
 @Component({
   selector: 'app-piece',

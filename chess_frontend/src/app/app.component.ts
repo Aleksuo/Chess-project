@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { BoardComponent } from './board/board.component';
-import { GameRoomService } from 'src/common/service/game-room.service';
+import { GameRoomService } from 'src/common/services/game-room.service';
 import { RoomUpdateResponse } from '@grpc-types/game_room_service/game_room_service_pb';
 
 @Component({
