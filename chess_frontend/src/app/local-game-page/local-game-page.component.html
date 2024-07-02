@@ -1,6 +1,13 @@
 <div class="flex justify-center h-full w-full">
   <div class="flex flex-grow justify-center items-center">
-    <app-board [board]="board"></app-board>
+    <app-board
+      [board]="board"
+      [selected]="selected()"
+      [movesForSelected]="movesForSelected()"
+      [currentTurn]="currentTurn"
+      (tileClick)="onTileClick($event)"
+    >
+    </app-board>
   </div>
   <div class="w-3/12 ml-4 border border-solid bg-slate-300 text-center">
     <span class="text-white">Game info</span>
