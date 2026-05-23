@@ -6,11 +6,10 @@ import { getTile } from 'src/common/utils/board-util';
 import { PieceColor, Piece } from 'src/common/types/board/board.type';
 
 @Component({
-  selector: 'app-local-game-page',
-  standalone: true,
-  imports: [BoardComponent],
-  templateUrl: './local-game-page.component.html',
-  styleUrl: './local-game-page.component.scss'
+    selector: 'app-local-game-page',
+    imports: [BoardComponent],
+    templateUrl: './local-game-page.component.html',
+    styleUrl: './local-game-page.component.scss'
 })
 export class LocalGamePageComponent {
   board = createBoard({ layout: 'STANDARD' });

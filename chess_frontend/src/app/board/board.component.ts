@@ -6,14 +6,13 @@ import { getTile } from 'src/common/utils/board-util';
 
 @Component({
     selector: 'app-board',
-    standalone: true,
     imports: [
         CommonModule,
         PieceComponent,
     ],
     templateUrl: './board.component.html',
     styleUrl: './board.component.css',
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BoardComponent {
 

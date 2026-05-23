@@ -5,14 +5,13 @@ import { GameRoomService } from 'src/common/services/game-room.service';
 import { RoomUpdateResponse } from '@grpc-types/game_room_service/game_room_service_pb';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [
-    RouterOutlet,
-    BoardComponent
-  ],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+    selector: 'app-root',
+    imports: [
+        RouterOutlet,
+        BoardComponent
+    ],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
   title = 'chess_frontend';
