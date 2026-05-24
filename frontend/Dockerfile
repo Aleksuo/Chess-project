@@ -1,4 +1,4 @@
-FROM node:22-slim AS base
+FROM node:24.16-slim AS base
 
 RUN apt update && apt install -y less man-db sudo
 RUN npm install -g @angular/cli
